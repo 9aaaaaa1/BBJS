@@ -77,10 +77,10 @@ GTV  https://958.xqhjej.com
 
 [rewrite_local]
 #测试91
-#^https?://120play\.vzcnqmr\.cn/videos2/\w{32}/\w{32}\.m3u8\?auth_key=\d+-\d+-\d+-[\w-]{32}&v=\d+$ url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/yuminggenghuan.snippet
+#^https?://120play\.vzcnqmr\.cn/videos2/\w{32}/\w{32}\.m3u8\?auth_key=\d+-\d+-\d+-[\w-]{32}&v=\d+$ url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/xiaojiu1.js
 
 #通用
-^https?://(\w+\.vzcnqmr\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/yuminggenghuan.snippet
+^https?://(\w+\.vzcnqmr\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/xiaojiu1.js
 
 [mitm] 
 
