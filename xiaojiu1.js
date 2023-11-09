@@ -62,11 +62,11 @@ GTV  https://958.xqhjej.com
  * @param {*} opts 通知参数
 [rewrite_local]
 #测试91
-#^https?://120play\.zihzot\.com/videos2/\w{32}/\w{32}\.m3u8\?auth_key=\d+-\d+-\d+-[\w-]{32}&v=\d+$ url script-request-header https://raw.githubusercontent.com/Yu9191/Script/main/m3u8.js
+#^https?://120play\.zihzot\.com/videos2/\w{32}/\w{32}\.m3u8\?auth_key=\d+-\d+-\d+-[\w-]{32}&v=\d+$ url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/xiaojiu1.js
 #通用
-^https?://(\w+\.vzcnqmr\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/Yu9191/Script/main/m3u8.js
+^https?://(\w+\.vzcnqmr\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/xiaojiu1.js
 #91制片厂
-^https?://(\w+\.jhdfeyq\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/Yu9191/Script/main/m3u8.js
+^https?://(\w+\.jhdfeyq\.cn)/(\w+)/\w{32}/\w{32}\.m3u8\? url script-request-header https://raw.githubusercontent.com/9aaaaaa1/jiua/main/xiaojiu1.js
 [mitm] 
 hostname = *.vzcnqmr.cn, *.jhdfeyq.cn
 */
