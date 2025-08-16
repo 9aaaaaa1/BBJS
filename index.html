@@ -1,172 +1,141 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<title>售后计算工具</title>
-<style>
+  <meta charset="UTF-8">
+  <title>售后计算工具</title>
+  <style>
     body {
-        font-family: "Microsoft YaHei", sans-serif;
-        background: #f0f2f5;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        min-height: 100vh;
-        margin: 0;
-        padding: 40px 10px;
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 30px;
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
     }
     .container {
-        background: #fff;
-        padding: 25px 30px;
-        border-radius: 12px;
-        width: 520px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
-    .container h2 {
-        margin: 0 0 20px 0;
-        font-size: 22px;
-        text-align: center;
-        color: #333;
-    }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-weight: bold;
-        color: #444;
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     textarea, input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 8px;
-        font-size: 15px;
-        border: 1px solid #d9d9d9;
-        border-radius: 6px;
-        box-sizing: border-box;
-        transition: border 0.2s ease;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
     }
-    textarea:focus, input:focus {
-        border-color: #1890ff;
-        outline: none;
+    button {
+      padding: 10px 18px;
+      margin: 6px 4px;
+      border: none;
+      border-radius: 8px;
+      background: #409eff;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .btn {
-        display: inline-block;
-        width: 100%;
-        padding: 10px;
-        margin-top: 18px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
+    button:hover { background: #66b1ff; }
+    .clear-btn { background: #f56c6c; }
+    .clear-btn:hover { background: #f78989; }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      line-height: 1.7;
     }
-    .btn-danger {
-        background: #ff4d4f;
-        color: white;
-    }
-    .btn-danger:hover {
-        background: #d9363e;
-    }
-    .result {
-        font-size: 15px;
-        margin-top: 20px;
-        line-height: 1.8;
-        padding: 15px;
-        background: #fafafa;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        color: #333;
-        min-height: 50px;
-    }
-    b {
-        color: #1890ff;
-    }
-</style>
+    .blue { color: #409eff; font-weight: bold; }
+    .green { color: #67c23a; font-weight: bold; }
+    .red { color: #f56c6c; font-weight: bold; }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>会发财集团--💡 售后计算工具</h2>
 
-<div class="container">
-    <h2>📊 会发财集团--售后计算工具</h2>
-
-    <label>📅 日期</label>
+    <label>输入日期：</label>
     <input type="date" id="dateInput">
 
-    <label>📝 输入每个群的数据（最后一个数为能收钱的号包数）</label>
-    <textarea id="groupData" rows="6" placeholder="示例：
-A群 500 300 200 100 800
-B群 200 100 50 400
-C群 600 550"></textarea>
-    
-    <button class="btn btn-danger" onclick="clearStorage()">清空暂存</button>
-    
-    <div class="result" id="result">请输入数据</div>
-</div>
+    <label>输入群数据（格式：群名 发包1 发包2 ... 收钱数）：</label>
+    <textarea id="groupData" rows="8" placeholder="示例：A群 500 300 200 100 800"></textarea>
 
-<script>
-// 页面加载时恢复暂存并计算
-window.onload = function() {
-    if (localStorage.getItem("groupData")) {
-        document.getElementById("groupData").value = localStorage.getItem("groupData");
-    }
-    if (localStorage.getItem("dateInput")) {
-        document.getElementById("dateInput").value = localStorage.getItem("dateInput");
-    }
-    calculate();
-}
+    <div>
+      <button onclick="calculate()">计算</button>
+      <button class="clear-btn" onclick="clearStorage()">清空暂存</button>
+    </div>
 
-// 监听输入变化（实时保存+计算）
-document.getElementById("groupData").addEventListener("input", function() {
-    saveData();
-    calculate();
-});
-document.getElementById("dateInput").addEventListener("input", function() {
-    saveData();
-    calculate();
-});
+    <div id="result">请输入数据</div>
+  </div>
 
-function saveData() {
-    localStorage.setItem("groupData", document.getElementById("groupData").value);
-    localStorage.setItem("dateInput", document.getElementById("dateInput").value);
-}
+  <script>
+    function calculate() {
+      let groupData = document.getElementById('groupData').value.trim();
+      let dateVal = document.getElementById('dateInput').value;
+      let lines = groupData.split(/\n/);
+      let totalAfterSale = 0;
+      let totalSend = 0;
+      let totalReceive = 0;
+      let output = "";
 
-function calculate() {
-    let groupData = document.getElementById('groupData').value.trim();
-    let dateVal = document.getElementById('dateInput').value;
-    let lines = groupData.split(/\n/);
-    let totalAfterSale = 0;
-    let output = "";
-
-    lines.forEach(line => {
+      lines.forEach(line => {
         let parts = line.trim().split(/[\s,]+/).map(p => p.trim());
-        if (parts.length < 3) return; // 至少 群名+发包数+收钱数
+        if (parts.length < 3) return; // 至少群名+发包+收钱
 
         let groupName = parts[0];
         let received = parseFloat(parts[parts.length - 1]) || 0;
-        let sendSum = parts.slice(1, -1).map(n => parseFloat(n) || 0).reduce((a, b) => a + b, 0);
+        let sendSum = parts.slice(1, -1)
+                           .map(n => parseFloat(n) || 0)
+                           .reduce((a, b) => a + b, 0);
         let afterSale = sendSum - received;
 
+        totalSend += sendSum;
+        totalReceive += received;
         totalAfterSale += afterSale;
-        output += `<b>${groupName}</b> | 发包总数：${sendSum}，收钱数：${received}，售后：<b>${afterSale}</b><br>`;
-    });
 
-    if (output) {
+        output += `<b>${groupName}</b> | 发包总数：<span class="blue">${sendSum}</span>，收钱数：<span class="green">${received}</span>，售后：<span class="red">${afterSale}</span><br>`;
+      });
+
+      if (output) {
         output = `<b>日期：</b>${dateVal || "未填写"}<br><br>` + output;
-        output += `<br><b>总售后：${totalAfterSale}</b>`;
+        output += `<br><b>总发包：<span class="blue">${totalSend}</span>，总收钱：<span class="green">${totalReceive}</span>，总售后：<span class="red">${totalAfterSale}</span></b>`;
+      }
+
+      document.getElementById('result').innerHTML = output || "请输入数据";
+
+      // 自动保存
+      localStorage.setItem('afterSaleData', JSON.stringify({
+        date: dateVal,
+        groupData: groupData
+      }));
     }
 
-    document.getElementById('result').innerHTML = output || "请输入数据";
-}
-
-function clearStorage() {
-    if (confirm("确定要清空暂存数据吗？")) {
-        localStorage.removeItem("groupData");
-        localStorage.removeItem("dateInput");
-        document.getElementById("groupData").value = "";
-        document.getElementById("dateInput").value = "";
-        document.getElementById("result").innerHTML = "请输入数据";
+    // 页面加载时恢复数据
+    window.onload = function() {
+      let saved = localStorage.getItem('afterSaleData');
+      if (saved) {
+        saved = JSON.parse(saved);
+        document.getElementById('dateInput').value = saved.date || "";
+        document.getElementById('groupData').value = saved.groupData || "";
+        calculate();
+      }
     }
-}
-</script>
 
+    // 清空暂存
+    function clearStorage() {
+      localStorage.removeItem('afterSaleData');
+      document.getElementById('dateInput').value = "";
+      document.getElementById('groupData').value = "";
+      document.getElementById('result').innerHTML = "请输入数据";
+    }
+  </script>
 </body>
 </html>
